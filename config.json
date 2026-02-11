@@ -1,0 +1,54 @@
+{
+    "UseTraderPriceColours": false,
+
+    "ColourNormalItems": true,
+    "ColourFleaBannedItems": true,
+    "BadItemPerSlotMaxValue": 5000,
+    "PoorItemPerSlotMaxValue": 10000,
+    "FairItemPerSlotMaxValue": 15000,
+    "GoodItemPerSlotMaxValue": 25000,
+    "VeryGoodItemPerSlotMaxValue": 35000,
+
+    "ColourKeys": true,
+    "ColourFleaBannedKeys": true,
+    "BadKeyMaxValue": 10000,
+    "PoorKeyMaxValue": 20000,
+    "FairKeyMaxValue": 30000,
+    "GoodKeyMaxValue": 50000,
+    "VeryGoodKeyMaxValue": 75000,
+
+    "DamageAndPenStatsInName": true,
+    "DamageAndPenStatsInShortNameWarningTiny": false,
+    "ColourAmmo": true,
+    "ColourFleaBannedAmmo": false,
+    "BadAmmoMaxPen": 15,
+    "PoorAmmoMaxPen": 26,
+    "FairAmmoMaxPen": 35,
+    "GoodAmmoMaxPen": 44,
+    "VeryGoodAmmoMaxPen": 54,
+    
+    "ColourWeapons": true,
+    "ColourFleaBannedWeapons": false,
+    "BadWeaponMaxValue": 20000,
+    "PoorWeaponMaxValue": 40000,
+    "FairWeaponMaxValue": 60000,
+    "GoodWeaponMaxValue": 80000,
+    "VeryGoodWeaponMaxValue": 100000,
+
+    "ColourArmours": true,
+    "ColourFleaBannedArmour": true,
+    "BadArmourMaxPlateClass": 1,
+    "PoorArmourMaxPlateClass": 2,
+    "FairArmourMaxPlateClass": 3,
+    "GoodArmourMaxPlateClass": 4,
+    "VeryGoodArmourMaxPlateClass": 5,
+
+    "BadColour": "#404040",
+    "PoorColour": "#a3a3a3",
+    "FairColour": "#0c3b08",
+    "GoodColour": "#08083b",
+    "VeryGoodColour": "#590b5e",
+    "ExceptionalColour": "#5e470b",
+
+    "FleaBannedColour": "#660415"
+}
