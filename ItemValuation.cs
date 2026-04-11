@@ -185,6 +185,8 @@ public class ItemValuation(
             {
                 continue;
             }
+            if (_modConfig.UseTraderPriceColours)
+                price = traderPriceInfo.traderPrice;
 
             var height = itemTable[mongoId].Properties.Height;
             var width = itemTable[mongoId].Properties.Width;
