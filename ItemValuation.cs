@@ -1,13 +1,11 @@
+using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
-using SPTarkov.Common.Extensions;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Helpers;
 using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Eft.Common.Tables;
-using SPTarkov.Server.Core.Models.Enums;
-using SPTarkov.Server.Core.Models.Enums.Hideout;
 using SPTarkov.Server.Core.Models.Spt.Config;
 using SPTarkov.Server.Core.Models.Spt.Mod;
 using SPTarkov.Server.Core.Models.Utils;
@@ -25,7 +23,7 @@ public record ModMetadata : AbstractModMetadata
     public override string Name { get; init; } = "Item Valuation";
     public override string Author { get; init; } = "acidphantasm";
     public override List<string>? Contributors { get; init; }
-    public override SemanticVersioning.Version Version { get; init; } = new("2.0.0");
+    public override SemanticVersioning.Version Version { get; init; } = new("2.0.1");
     public override SemanticVersioning.Range SptVersion { get; init; } = new("~4.0.12");
     public override List<string>? Incompatibilities { get; init; } = ["com.odt.iteminfo"];
     public override Dictionary<string, SemanticVersioning.Range>? ModDependencies { get; init; }
@@ -137,6 +135,7 @@ public class ItemValuation(
     }
     private void SetColours(bool firstRun = false)
     {
+        var sw = Stopwatch.StartNew();
         var itemTable = databaseService.GetItems();
         var priceTable = databaseService.GetPrices();
         var handbookTable = databaseService.GetHandbook();
@@ -282,9 +281,11 @@ public class ItemValuation(
             if (string.IsNullOrEmpty(newBackgroundColour)) continue;
             itemTable[mongoId].Properties.BackgroundColor = newBackgroundColour;
         }
-        
+
+        var time = sw.ElapsedMilliseconds;
+        sw.Stop();
         _originalPrices = cloner.Clone(databaseService.GetPrices());
-        Console.WriteLine($"[Item Valuation] Updated {_itemsUpdated} items");
+        Console.WriteLine($"[Item Valuation] Updated {_itemsUpdated} items in {time} ms");
         _itemsUpdated = 0;
     }
 
@@ -337,10 +338,18 @@ public class ItemValuation(
 
     private void FinalizeItemAndLocales(double? price, bool availableOnFlea, MongoId itemId, TraderPriceTableDetails traderPrice, bool perSlotDescription = false)
     {
+        
+        if (!_originalLocales.TryGetValue($"{itemId} Description", out var originalDescription) &&
+            !_originalLocales.TryGetValue($"{itemId} description", out originalDescription))
+        {
+            logger.Warning($"[Item Valuation] No locale description for {itemId} - Report to the author of that item ID...skipping..");
+            return;
+        }
+        
         foreach (var (locale, entry) in databaseService.GetLocales().Global)
         {
             var priceType = perSlotDescription ? "Per Slot:" : "Total:";
-            var originalDescription = _originalLocales[$"{itemId} Description"];
+            
             var fleaText = availableOnFlea
                 ? "<color=#17751b>Not Flea Banned</color>"
                 : "<color=#751717>Flea Banned</color>";
